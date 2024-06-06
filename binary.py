@@ -28,6 +28,48 @@ class Binary:
     def __repr__(self) -> str:
         return f"Binary({self.value})"
 
+    def __eq__(self, other):
+        if not isinstance(other, Binary):
+            raise NotImplementedError(
+                f"Cannot compare Binary with {str(type(other))[7:-1]}"
+            )
+        return Binary._compare(self, other, "eq")
+
+    def __lt__(self, other):
+        if not isinstance(other, Binary):
+            raise NotImplementedError(
+                f"Cannot compare Binary with {str(type(other))[7:-1]}"
+            )
+        return Binary._compare(self, other, "lt")
+
+    def __le__(self, other):
+        if not isinstance(other, Binary):
+            raise NotImplementedError(
+                f"Cannot compare Binary with {str(type(other))[7:-1]}"
+            )
+        return Binary._compare(self, other, "le")
+
+    def __gt__(self, other):
+        if not isinstance(other, Binary):
+            raise NotImplementedError(
+                f"Cannot compare Binary with {str(type(other))[7:-1]}"
+            )
+        return Binary._compare(self, other, "gt")
+
+    def __ge__(self, other):
+        if not isinstance(other, Binary):
+            raise NotImplementedError(
+                f"Cannot compare Binary with {str(type(other))[7:-1]}"
+            )
+        return Binary._compare(self, other, "ge")
+
+    def __ne__(self, other):
+        if not isinstance(other, Binary):
+            raise NotImplementedError(
+                f"Cannot compare Binary with {str(type(other))[7:-1]}"
+            )
+        return Binary._compare(self, other, "ne")
+
     ##########################
     ##### Public methods #####
     ##########################
@@ -129,3 +171,22 @@ class Binary:
             value[byte_index] |= 1 << bit_index
         else:
             value[byte_index] &= ~(1 << bit_index)
+
+    # pylint: disable=too-many-return-statements
+    @staticmethod
+    def _compare(left: Self, right: Self, operator: str) -> bool:
+        if operator == "eq":
+            return left.value == right.value
+        if operator == "lt":
+            return left.value < right.value
+        if operator == "le":
+            return left.value <= right.value
+        if operator == "gt":
+            return left.value > right.value
+        if operator == "ge":
+            return left.value >= right.value
+        if operator == "ne":
+            return left.value != right.value
+        return False
+
+    # pylint: enable=too-many-return-statements

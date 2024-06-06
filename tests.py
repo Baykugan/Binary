@@ -20,7 +20,6 @@ class TestBinary(unittest.TestCase):
         Test the _create_bit_array method.
         """
 
-        
         bit_array = Binary._create_bit_array([0])
         self.assertEqual(
             bit_array,
@@ -41,6 +40,7 @@ class TestBinary(unittest.TestCase):
             bytearray([255, 255]),
             "Failed to create byte array from [1] * 16",
         )
+
     # pylint: enable=protected-access
 
     def test_from_decimal(self):
@@ -218,6 +218,139 @@ class TestBinary(unittest.TestCase):
 
         with self.assertRaises(ValueError, msg="Invalid value"):
             Binary.from_value(None)
+
+    def test_eq(self):
+        """
+        Test the __eq__ method.
+        """
+
+        left = Binary(0)
+        right = Binary(0)
+        self.assertTrue(left == right, "Failed to compare 0 == 0")
+
+        left = Binary(0)
+        right = Binary(1)
+        self.assertFalse(left == right, "Failed to compare 0 == 1")
+
+    def test_lt(self):
+        """
+        Test the __lt__ method.
+        """
+
+        left = Binary(0)
+        right = Binary(1)
+        self.assertTrue(left < right, "Failed to compare 0 < 1")
+
+        left = Binary(1)
+        right = Binary(0)
+        self.assertFalse(left < right, "Failed to compare 1 < 0")
+
+    def test_le(self):
+        """
+        Test the __le__ method.
+        """
+
+        left = Binary(0)
+        right = Binary(1)
+        self.assertTrue(left <= right, "Failed to compare 0 <= 1")
+
+        left = Binary(1)
+        right = Binary(0)
+
+        self.assertFalse(left <= right, "Failed to compare 1 <= 0")
+
+        left = Binary(0)
+        right = Binary(0)
+        self.assertTrue(left <= right, "Failed to compare 0 <= 0")
+
+    def test_gt(self):
+        """
+        Test the __gt__ method.
+        """
+
+        left = Binary(1)
+        right = Binary(0)
+        self.assertTrue(left > right, "Failed to compare 1 > 0")
+
+        left = Binary(0)
+        right = Binary(1)
+        self.assertFalse(left > right, "Failed to compare 0 > 1")
+
+    def test_ge(self):
+        """
+        Test the __ge__ method.
+        """
+
+        left = Binary(1)
+        right = Binary(0)
+        self.assertTrue(left >= right, "Failed to compare 1 >= 0")
+
+        left = Binary(0)
+        right = Binary(1)
+        self.assertFalse(left >= right, "Failed to compare 0 >= 1")
+
+        left = Binary(0)
+        right = Binary(0)
+        self.assertTrue(left >= right, "Failed to compare 0 >= 0")
+
+    def test_ne(self):
+        """
+        Test the __ne__ method.
+        """
+
+        left = Binary(0)
+        right = Binary(1)
+        self.assertTrue(left != right, "Failed to compare 0 != 1")
+
+        left = Binary(0)
+        right = Binary(0)
+        self.assertFalse(left != right, "Failed to compare 0 != 0")
+
+    # pylint: disable=protected-access
+    def test_compare_restraints(self):
+        """
+        Test the _compare method with invalid input.
+        """
+
+        left = Binary(0)
+        right = None
+        with self.assertRaises(
+            NotImplementedError,
+            msg="Invalid comparison allowed",
+        ):
+            Binary.__eq__(left, right)
+
+        with self.assertRaises(
+            NotImplementedError,
+            msg="Invalid comparison allowed",
+        ):
+            Binary.__lt__(left, right)
+
+        with self.assertRaises(
+            NotImplementedError,
+            msg="Invalid comparison allowed",
+        ):
+            Binary.__le__(left, right)
+
+        with self.assertRaises(
+            NotImplementedError,
+            msg="Invalid comparison allowed",
+        ):
+            Binary.__gt__(left, right)
+
+        with self.assertRaises(
+            NotImplementedError,
+            msg="Invalid comparison allowed",
+        ):
+            Binary.__ge__(left, right)
+
+        with self.assertRaises(
+            NotImplementedError,
+            msg="Invalid comparison allowed",
+        ):
+            Binary.__ne__(left, right)
+
+    # pylint: enable=protected-access
 
 
 if __name__ == "__main__":
