@@ -14,6 +14,10 @@ class TestBinary(unittest.TestCase):
     This class contains the unit tests for the Binary class.
     """
 
+    test_for_0 = bytearray([0])
+    test_for_1 = bytearray([1])
+    test_for_large = bytearray([255, 255])
+
     # pylint: disable=protected-access
     def test_create_byte_array(self):
         """
@@ -23,21 +27,21 @@ class TestBinary(unittest.TestCase):
         bit_array = Binary._create_bit_array([0])
         self.assertEqual(
             bit_array,
-            bytearray([0]),
+            self.test_for_0,
             "Failed to create byte array from list [0]",
         )
 
         bit_array = Binary._create_bit_array([1])
         self.assertEqual(
             bit_array,
-            bytearray([1]),
+            self.test_for_1,
             "Failed to create byte array from list [1]",
         )
 
-        large_bit_array = Binary._create_bit_array([1] * 16)
+        bit_array = Binary._create_bit_array([1] * 16)
         self.assertEqual(
-            large_bit_array,
-            bytearray([255, 255]),
+            bit_array,
+            self.test_for_large,
             "Failed to create byte array from [1] * 16",
         )
 
@@ -51,21 +55,21 @@ class TestBinary(unittest.TestCase):
         bit_array = Binary.from_decimal(0)
         self.assertEqual(
             bit_array,
-            bytearray([0]),
+            self.test_for_0,
             "Failed to create byte array from decimal 0",
         )
 
         bit_array = Binary.from_decimal(1)
         self.assertEqual(
             bit_array,
-            bytearray([1]),
+            self.test_for_1,
             "Failed to create byte array from decimal 1",
         )
 
         bit_array = Binary.from_decimal(2**16 - 1)
         self.assertEqual(
             bit_array,
-            bytearray([255, 255]),
+            self.test_for_large,
             "Failed to create byte array from decimal 2**16 - 1",
         )
 
@@ -85,21 +89,21 @@ class TestBinary(unittest.TestCase):
         bit_array = Binary.from_string("0")
         self.assertEqual(
             bit_array,
-            bytearray([0]),
+            self.test_for_0,
             "Failed to create byte array from string '0'",
         )
 
         bit_array = Binary.from_string("1")
         self.assertEqual(
             bit_array,
-            bytearray([1]),
+            self.test_for_1,
             "Failed to create byte array from string '1'",
         )
 
         bit_array = Binary.from_string("1" * 16)
         self.assertEqual(
             bit_array,
-            bytearray([255, 255]),
+            self.test_for_large,
             "Failed to create byte array from string '1' * 16",
         )
 
@@ -119,21 +123,21 @@ class TestBinary(unittest.TestCase):
         bit_array = Binary.from_list([0])
         self.assertEqual(
             bit_array,
-            bytearray([0]),
+            self.test_for_0,
             "Failed to create byte array from list [0]",
         )
 
         bit_array = Binary.from_list([1])
         self.assertEqual(
             bit_array,
-            bytearray([1]),
+            self.test_for_1,
             "Failed to create byte array from list [1]",
         )
 
         bit_array = Binary.from_list([1] * 16)
         self.assertEqual(
             bit_array,
-            bytearray([255, 255]),
+            self.test_for_large,
             "Failed to create byte array from list [1] * 16",
         )
 
@@ -179,35 +183,35 @@ class TestBinary(unittest.TestCase):
         binary = Binary.from_value(Binary(0))
         self.assertEqual(
             binary,
-            bytearray([0]),
+            self.test_for_0,
             "Failed to convert Binary object to byte array",
         )
 
         binary = Binary.from_value(bytearray([0]))
         self.assertEqual(
             binary,
-            bytearray([0]),
+            self.test_for_0,
             "Failed to convert byte array to byte array",
         )
 
         binary = Binary.from_value(0)
         self.assertEqual(
             binary,
-            bytearray([0]),
+            self.test_for_0,
             "Failed to convert decimal to byte array",
         )
 
         binary = Binary.from_value("0")
         self.assertEqual(
             binary,
-            bytearray([0]),
+            self.test_for_0,
             "Failed to convert string to byte array",
         )
 
         binary = Binary.from_value([0])
         self.assertEqual(
             binary,
-            bytearray([0]),
+            self.test_for_0,
             "Failed to convert list to byte array",
         )
 
