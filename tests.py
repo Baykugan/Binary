@@ -54,8 +54,8 @@ class TestBinaryRepresentation(unittest.TestCase):
 
     @parameterized.expand(
         [
-            (Binary(10), "Binary(10)"),
-            (Binary("1010"), "Binary(10)"),
+            (Binary(10), "Binary(1010)"),
+            (Binary("1010"), "Binary(1010)"),
         ]
     )
     def test_repr(self, binary, expected):

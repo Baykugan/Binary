@@ -24,7 +24,7 @@ class Binary:
         return self.bits.to01()
 
     def __repr__(self) -> str:
-        return f"Binary({self.to_decimal()})"
+        return f"Binary({self.bits.to01()})"
 
     def __eq__(self, other: Any) -> bool:
         if isinstance(other, Binary):
