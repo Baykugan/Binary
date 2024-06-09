@@ -121,7 +121,7 @@ class Binary:
         bit_array[position] = bit
 
     @staticmethod
-    def _normalize_bit_arrays(*, bit_arrays: tuple[bitarray]) -> tuple[bitarray]:
+    def _normalize_bit_arrays(*bit_arrays: tuple[bitarray]) -> tuple[bitarray]:
         max_len = max(map(len, bit_arrays))
         return tuple(
             bitarray("0") * (max_len - len(bit_array)) + bit_array
@@ -130,9 +130,8 @@ class Binary:
 
     @staticmethod
     def _compare_binary(left: Self, right: Self, operator: str) -> bool:
-        max_len = max(len(left.bits), len(right.bits))
         normalized_left, normalized_right = Binary._normalize_bit_arrays(
-            bit_arrays=(left.bits, right.bits)
+            left.bits, right.bits
         )
         if operator == "eq":
             return normalized_left == normalized_right
