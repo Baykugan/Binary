@@ -130,7 +130,6 @@ class Binary:
 
     @staticmethod
     def _compare_binary(left: Self, right: Self, operator: str) -> bool:
-        max_len = max(len(left.bits), len(right.bits))
         normalized_left, normalized_right = Binary._normalize_bit_arrays(
             bit_arrays=(left.bits, right.bits)
         )
