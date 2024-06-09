@@ -30,7 +30,7 @@ class TestBinaryInitialization(unittest.TestCase):
         """
 
         self.assertEqual(
-            Binary(value).to_decimal(), expected, msg=f"Failed for value: {value}"
+            Binary(value).to_decimal(), expected, msg=f"Failed for value: {value}."
         )
 
 
@@ -50,7 +50,7 @@ class TestBinaryRepresentation(unittest.TestCase):
         Test __str__ method of Binary class.
         """
 
-        self.assertEqual(str(binary), expected, msg=f"Failed for binary: {binary}")
+        self.assertEqual(str(binary), expected, msg=f"Failed for binary: {binary}.")
 
     @parameterized.expand(
         [
@@ -63,7 +63,7 @@ class TestBinaryRepresentation(unittest.TestCase):
         Test __repr__ method of Binary class.
         """
 
-        self.assertEqual(repr(binary), expected, msg=f"Failed for binary: {binary}")
+        self.assertEqual(repr(binary), expected, msg=f"Failed for binary: {binary}.")
 
 
 class TestBinaryComparisonOperators(unittest.TestCase):
@@ -84,7 +84,9 @@ class TestBinaryComparisonOperators(unittest.TestCase):
         Test __eq__ method of Binary class.
         """
 
-        self.assertEqual(left == right, expected, msg=f"Failed for {left} == {right}")
+        self.assertEqual(
+            left == right, expected, msg=f"Failed for expression: {left} == {right}."
+        )
 
     @parameterized.expand(
         [
@@ -97,7 +99,9 @@ class TestBinaryComparisonOperators(unittest.TestCase):
         Test __lt__ method of Binary class.
         """
 
-        self.assertEqual(left < right, expected, msg=f"Failed for {left} < {right}")
+        self.assertEqual(
+            left < right, expected, msg=f"Failed for expression: {left} < {right}."
+        )
 
     @parameterized.expand(
         [
@@ -111,7 +115,9 @@ class TestBinaryComparisonOperators(unittest.TestCase):
         Test __le__ method of Binary class.
         """
 
-        self.assertEqual(left <= right, expected, msg=f"Failed for {left} <= {right}")
+        self.assertEqual(
+            left <= right, expected, msg=f"Failed for expression: {left} <= {right}."
+        )
 
     @parameterized.expand(
         [
@@ -124,7 +130,9 @@ class TestBinaryComparisonOperators(unittest.TestCase):
         Test __gt__ method of Binary class.
         """
 
-        self.assertEqual(left > right, expected, msg=f"Failed for {left} > {right}")
+        self.assertEqual(
+            left > right, expected, msg=f"Failed for expression: {left} > {right}."
+        )
 
     @parameterized.expand(
         [
@@ -138,7 +146,9 @@ class TestBinaryComparisonOperators(unittest.TestCase):
         Test __ge__ method of Binary class.
         """
 
-        self.assertEqual(left >= right, expected, msg=f"Failed for {left} >= {right}")
+        self.assertEqual(
+            left >= right, expected, msg=f"Failed for expression: {left} >= {right}."
+        )
 
     @parameterized.expand(
         [
@@ -151,7 +161,9 @@ class TestBinaryComparisonOperators(unittest.TestCase):
         Test __ne__ method of Binary class.
         """
 
-        self.assertEqual(left != right, expected, msg=f"Failed for {left} != {right}")
+        self.assertEqual(
+            left != right, expected, msg=f"Failed for expression: {left} != {right}."
+        )
 
     # pylint: disable=pointless-statement
     @parameterized.expand(
@@ -169,17 +181,29 @@ class TestBinaryComparisonOperators(unittest.TestCase):
         Test comparison operators with invalid types.
         """
 
-        with self.assertRaises(NotImplementedError):
+        with self.assertRaises(
+            NotImplementedError, msg=f"Failed for expression: {binary} == {other}."
+        ):
             binary == other
-        with self.assertRaises(NotImplementedError):
+        with self.assertRaises(
+            NotImplementedError, msg=f"Failed for expression: {binary} != {other}."
+        ):
             binary != other
-        with self.assertRaises(NotImplementedError):
+        with self.assertRaises(
+            NotImplementedError, msg=f"Failed for expression: {binary} < {other}."
+        ):
             binary < other
-        with self.assertRaises(NotImplementedError):
+        with self.assertRaises(
+            NotImplementedError, msg=f"Failed for expression: {binary} <= {other}."
+        ):
             binary <= other
-        with self.assertRaises(NotImplementedError):
+        with self.assertRaises(
+            NotImplementedError, msg=f"Failed for expression: {binary} > {other}."
+        ):
             binary > other
-        with self.assertRaises(NotImplementedError):
+        with self.assertRaises(
+            NotImplementedError, msg=f"Failed for expression: {binary} >= {other}."
+        ):
             binary >= other
 
     # pylint: enable=pointless-statement
@@ -202,7 +226,7 @@ class TestBinaryMethods(unittest.TestCase):
         """
 
         self.assertEqual(
-            Binary(value).to_decimal(), expected, msg=f"Failed for value: {value}"
+            Binary(value).to_decimal(), expected, msg=f"Failed for value: {value}."
         )
 
 
@@ -222,7 +246,9 @@ class TestBitwiseOperators(unittest.TestCase):
         Test __and__ method of Binary class.
         """
 
-        self.assertEqual(left & right, expected, msg=f"Failed for {left} & {right}")
+        self.assertEqual(
+            left & right, expected, msg=f"Failed for operator: {left} & {right}."
+        )
 
     @parameterized.expand(
         [
@@ -235,7 +261,9 @@ class TestBitwiseOperators(unittest.TestCase):
         Test __or__ method of Binary class.
         """
 
-        self.assertEqual(left | right, expected, msg=f"Failed for {left} | {right}")
+        self.assertEqual(
+            left | right, expected, msg=f"Failed for opreator: {left} | {right}."
+        )
 
     @parameterized.expand(
         [
@@ -248,7 +276,9 @@ class TestBitwiseOperators(unittest.TestCase):
         Test __xor__ method of Binary class.
         """
 
-        self.assertEqual(left ^ right, expected, msg=f"Failed for {left} ^ {right}")
+        self.assertEqual(
+            left ^ right, expected, msg=f"Failed for operator: {left} ^ {right}."
+        )
 
     @parameterized.expand(
         [
@@ -263,7 +293,7 @@ class TestBitwiseOperators(unittest.TestCase):
         """
 
         self.assertEqual(
-            binary << shift, expected, msg=f"Failed for {binary} << {shift}"
+            binary << shift, expected, msg=f"Failed for operator: {binary} << {shift}."
         )
 
     @parameterized.expand(
@@ -279,7 +309,7 @@ class TestBitwiseOperators(unittest.TestCase):
         """
 
         self.assertEqual(
-            binary >> shift, expected, msg=f"Failed for {binary} >> {shift}"
+            binary >> shift, expected, msg=f"Failed for operator: {binary} >> {shift}."
         )
 
 
@@ -300,9 +330,7 @@ class TestSmallerMethods(unittest.TestCase):
         """
 
         binary.flip_bit(position)
-        self.assertEqual(
-            binary, expected, msg=f"Failed for {binary} flip at {position}"
-        )
+        self.assertEqual(binary, expected, msg="Failed for bit flip.")
 
 
 if __name__ == "__main__":

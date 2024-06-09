@@ -30,63 +30,63 @@ class Binary:
         if isinstance(other, Binary):
             return Binary._compare_binary(self, other, "eq")
         raise NotImplementedError(
-            f"Cannot take equality of Binary with {type(other).__name__}"
+            f"Cannot take equality of Binary with {type(other).__name__}."
         )
 
     def __lt__(self, other: Any) -> bool:
         if isinstance(other, Binary):
             return Binary._compare_binary(self, other, "lt")
         raise NotImplementedError(
-            f"Cannot take less than of Binary with {type(other).__name__}"
+            f"Cannot take less than of Binary with {type(other).__name__}."
         )
 
     def __le__(self, other: Any) -> bool:
         if isinstance(other, Binary):
             return Binary._compare_binary(self, other, "le")
         raise NotImplementedError(
-            f"Cannot take less than or equal of Binary with {type(other).__name__}"
+            f"Cannot take less than or equal of Binary with {type(other).__name__}."
         )
 
     def __gt__(self, other: Any) -> bool:
         if isinstance(other, Binary):
             return Binary._compare_binary(self, other, "gt")
         raise NotImplementedError(
-            f"Cannot take greater than of Binary with {type(other).__name__}"
+            f"Cannot take greater than of Binary with {type(other).__name__}."
         )
 
     def __ge__(self, other: Any) -> bool:
         if isinstance(other, Binary):
             return Binary._compare_binary(self, other, "ge")
         raise NotImplementedError(
-            f"Cannot take greater than or equal of Binary with {type(other).__name__}"
+            f"Cannot take greater than or equal of Binary with {type(other).__name__}."
         )
 
     def __ne__(self, other: Any) -> bool:
         if isinstance(other, Binary):
             return Binary._compare_binary(self, other, "ne")
         raise NotImplementedError(
-            f"Cannot take not equal of Binary with {type(other).__name__}"
+            f"Cannot take not equal of Binary with {type(other).__name__}."
         )
 
     def __and__(self, other: Any) -> Self:
         if isinstance(other, Binary):
             return Binary._bitwise_binary(self, other, "and")
         raise NotImplementedError(
-            f"Cannot take bitwise and of Binary with {type(other).__name__}"
+            f"Cannot take bitwise and of Binary with {type(other).__name__}."
         )
 
     def __or__(self, other: Any) -> Self:
         if isinstance(other, Binary):
             return Binary._bitwise_binary(self, other, "or")
         raise NotImplementedError(
-            f"Cannot take bitwise or of Binary with {type(other).__name__}"
+            f"Cannot take bitwise or of Binary with {type(other).__name__}."
         )
 
     def __xor__(self, other: Any) -> Self:
         if isinstance(other, Binary):
             return Binary._bitwise_binary(self, other, "xor")
         raise NotImplementedError(
-            f"Cannot take bitwise xor of Binary with {type(other).__name__}"
+            f"Cannot take bitwise xor of Binary with {type(other).__name__}."
         )
 
     def __lshift__(self, shift: int) -> Self:
@@ -135,7 +135,7 @@ class Binary:
             return cls._create_bit_array(bin(value)[2:])
         if isinstance(value, (str, list, tuple, set)):
             return cls._create_bit_array(value)
-        raise ValueError(f"Invalid type of value: {str(type(value))[7:-1]}")
+        raise ValueError(f"Invalid type of value: {type(value).__name__}.")
 
     ###################################
     ##### Private Static methods ######
@@ -182,7 +182,7 @@ class Binary:
             return normalized_left >= normalized_right
         if operator == "ne":
             return normalized_left != normalized_right
-        raise ValueError("Invalid operator")
+        raise ValueError("Invalid operator.")
 
     @staticmethod
     def _bitwise_binary(left: Self, right: Self, operator: str) -> Self:
@@ -195,7 +195,7 @@ class Binary:
             return Binary(normalized_left | normalized_right)
         if operator == "xor":
             return Binary(normalized_left ^ normalized_right)
-        raise ValueError("Invalid operator")
+        raise ValueError("Invalid operator.")
 
     @staticmethod
     def _shift_binary(binary: Self, shift: int, operator: str) -> Self:
@@ -203,7 +203,7 @@ class Binary:
             return Binary(binary.bits << shift)
         if operator == "right":
             return Binary(binary.bits >> shift)
-        raise ValueError("Invalid operator")
+        raise ValueError("Invalid operator.")
 
     @staticmethod
     def _invert_binary(binary: Self) -> Self:
@@ -221,4 +221,4 @@ class Binary:
                     len(bit_array) - pos - 1
                 ]
         else:
-            raise ValueError(f"Invalid type of position: {type(position).__name__}")
+            raise ValueError(f"Invalid type of position: {type(position).__name__}.")
