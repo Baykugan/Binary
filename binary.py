@@ -109,6 +109,13 @@ class Binary:
 
         return Binary._to_decimal(self.bits)
 
+    def flip_bit(self, position: Union[int, tuple[int]]) -> None:
+        """
+        Flip the bit at the given position.
+        """
+
+        Binary._flip_bit(self.bits, position)
+
     ################################
     ##### Public Class methods #####
     ################################
@@ -201,3 +208,17 @@ class Binary:
     @staticmethod
     def _invert_binary(binary: Self) -> Self:
         return Binary(~binary.bits)
+
+    @staticmethod
+    def _flip_bit(bit_array: bitarray, position: Union[int, tuple[int]]) -> None:
+        if isinstance(position, int):
+            bit_array[len(bit_array) - position - 1] = not bit_array[
+                len(bit_array) - position - 1
+            ]
+        elif isinstance(position, tuple):
+            for pos in position:
+                bit_array[len(bit_array) - pos - 1] = not bit_array[
+                    len(bit_array) - pos - 1
+                ]
+        else:
+            raise ValueError(f"Invalid type of position: {type(position).__name__}")

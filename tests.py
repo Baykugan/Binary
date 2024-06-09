@@ -283,5 +283,27 @@ class TestBitwiseOperators(unittest.TestCase):
         )
 
 
+class TestSmallerMethods(unittest.TestCase):
+    """
+    Test cases for smaller methods of Binary class.
+    """
+
+    @parameterized.expand(
+        [
+            (Binary("1101 1001"), 3, Binary("1101 0001")),
+            (Binary("1101 1001"), (3, 4, 5), Binary("1110 0001")),
+        ]
+    )
+    def test_flip_bit(self, binary, position, expected):
+        """
+        Test flip_bit method of Binary class.
+        """
+
+        binary.flip_bit(position)
+        self.assertEqual(
+            binary, expected, msg=f"Failed for {binary} flip at {position}"
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
