@@ -68,6 +68,36 @@ class Binary:
             f"Cannot take not equal of Binary with {type(other).__name__}"
         )
 
+    def __and__(self, other: Any) -> Self:
+        if isinstance(other, Binary):
+            return Binary._bitwise_binary(self, other, "and")
+        raise NotImplementedError(
+            f"Cannot take bitwise and of Binary with {type(other).__name__}"
+        )
+
+    def __or__(self, other: Any) -> Self:
+        if isinstance(other, Binary):
+            return Binary._bitwise_binary(self, other, "or")
+        raise NotImplementedError(
+            f"Cannot take bitwise or of Binary with {type(other).__name__}"
+        )
+
+    def __xor__(self, other: Any) -> Self:
+        if isinstance(other, Binary):
+            return Binary._bitwise_binary(self, other, "xor")
+        raise NotImplementedError(
+            f"Cannot take bitwise xor of Binary with {type(other).__name__}"
+        )
+
+    def __lshift__(self, shift: int) -> Self:
+        return Binary._shift_binary(self, shift, "left")
+
+    def __rshift__(self, shift: int) -> Self:
+        return Binary._shift_binary(self, shift, "right")
+
+    def __invert__(self) -> Self:
+        return Binary._invert_binary(self)
+
     ###################################
     ##### Public Instance methods #####
     ###################################
@@ -146,3 +176,28 @@ class Binary:
         if operator == "ne":
             return normalized_left != normalized_right
         raise ValueError("Invalid operator")
+
+    @staticmethod
+    def _bitwise_binary(left: Self, right: Self, operator: str) -> Self:
+        normalized_left, normalized_right = Binary._normalize_bit_arrays(
+            left.bits, right.bits
+        )
+        if operator == "and":
+            return Binary(normalized_left & normalized_right)
+        if operator == "or":
+            return Binary(normalized_left | normalized_right)
+        if operator == "xor":
+            return Binary(normalized_left ^ normalized_right)
+        raise ValueError("Invalid operator")
+
+    @staticmethod
+    def _shift_binary(binary: Self, shift: int, operator: str) -> Self:
+        if operator == "left":
+            return Binary(binary.bits << shift)
+        if operator == "right":
+            return Binary(binary.bits >> shift)
+        raise ValueError("Invalid operator")
+
+    @staticmethod
+    def _invert_binary(binary: Self) -> Self:
+        return Binary(~binary.bits)

@@ -206,5 +206,82 @@ class TestBinaryMethods(unittest.TestCase):
         )
 
 
+class TestBitwiseOperators(unittest.TestCase):
+    """
+    Test cases for bitwise operators of Binary class.
+    """
+
+    @parameterized.expand(
+        [
+            (Binary("1101 1001"), Binary("1001 1011"), Binary("1001 1001")),
+            (Binary("1101 1001"), Binary("1001 1010"), Binary("1001 1000")),
+        ]
+    )
+    def test_and(self, left, right, expected):
+        """
+        Test __and__ method of Binary class.
+        """
+
+        self.assertEqual(left & right, expected, msg=f"Failed for {left} & {right}")
+
+    @parameterized.expand(
+        [
+            (Binary("1101 1001"), Binary("1001 1011"), Binary("1101 1011")),
+            (Binary("1101 1001"), Binary("1001 1010"), Binary("1101 1011")),
+        ]
+    )
+    def test_or(self, left, right, expected):
+        """
+        Test __or__ method of Binary class.
+        """
+
+        self.assertEqual(left | right, expected, msg=f"Failed for {left} | {right}")
+
+    @parameterized.expand(
+        [
+            (Binary("1101 1001"), Binary("1001 1011"), Binary("0100 0010")),
+            (Binary("1101 1001"), Binary("1001 1010"), Binary("0100 0011")),
+        ]
+    )
+    def test_xor(self, left, right, expected):
+        """
+        Test __xor__ method of Binary class.
+        """
+
+        self.assertEqual(left ^ right, expected, msg=f"Failed for {left} ^ {right}")
+
+    @parameterized.expand(
+        [
+            (Binary("1101 1001"), 2, Binary("110 0100")),
+            (Binary("1101 1001"), 3, Binary("1100 1000")),
+            (Binary("1101 1001"), 8, Binary("0000 0000")),
+        ]
+    )
+    def test_lshift(self, binary, shift, expected):
+        """
+        Test __lshift__ method of Binary class.
+        """
+
+        self.assertEqual(
+            binary << shift, expected, msg=f"Failed for {binary} << {shift}"
+        )
+
+    @parameterized.expand(
+        [
+            (Binary("1101 1001"), 2, Binary("0011 0110")),
+            (Binary("1101 1001"), 3, Binary("0001 1011")),
+            (Binary("1101 1001"), 8, Binary("0000 0000")),
+        ]
+    )
+    def test_rshift(self, binary, shift, expected):
+        """
+        Test __rshift__ method of Binary class.
+        """
+
+        self.assertEqual(
+            binary >> shift, expected, msg=f"Failed for {binary} >> {shift}"
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
