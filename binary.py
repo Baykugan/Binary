@@ -2,7 +2,8 @@
 Contains the Binary class.
 """
 
-from typing import Any, Self
+from typing import Any, Union, Self
+from bitarray import bitarray
 
 
 class Binary:
@@ -16,177 +17,133 @@ class Binary:
     ##### Magic methods #####
     #########################
 
-    def __init__(self, value: Self | int | str | bytearray | list[int]) -> None:
-        self.value = Binary.from_value(value)
+    def __init__(self, value: Union[Self, int, str, bitarray, list[int]] = 0) -> None:
+        self.bits = self.from_value(value)
 
     def __str__(self) -> str:
-        return "".join(
-            str(Binary._get_bit(self.value, i))
-            for i in reversed(range(len(self.value) * 8))
-        )
+        return self.bits.to01()
 
     def __repr__(self) -> str:
-        return f"Binary({self.value})"
+        return f"Binary({self.to_decimal()})"
 
-    def __eq__(self, other):
-        if not isinstance(other, Binary):
-            raise NotImplementedError(
-                f"Cannot compare Binary with {str(type(other))[7:-1]}"
-            )
-        return Binary._compare(self, other, "eq")
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, Binary):
+            return Binary._compare_binary(self, other, "eq")
+        raise NotImplementedError(
+            f"Cannot take equality of Binary with {type(other).__name__}"
+        )
 
-    def __lt__(self, other):
-        if not isinstance(other, Binary):
-            raise NotImplementedError(
-                f"Cannot compare Binary with {str(type(other))[7:-1]}"
-            )
-        return Binary._compare(self, other, "lt")
+    def __lt__(self, other: Any) -> bool:
+        if isinstance(other, Binary):
+            return Binary._compare_binary(self, other, "lt")
+        raise NotImplementedError(
+            f"Cannot take less than of Binary with {type(other).__name__}"
+        )
 
-    def __le__(self, other):
-        if not isinstance(other, Binary):
-            raise NotImplementedError(
-                f"Cannot compare Binary with {str(type(other))[7:-1]}"
-            )
-        return Binary._compare(self, other, "le")
+    def __le__(self, other: Any) -> bool:
+        if isinstance(other, Binary):
+            return Binary._compare_binary(self, other, "le")
+        raise NotImplementedError(
+            f"Cannot take less than or equal of Binary with {type(other).__name__}"
+        )
 
-    def __gt__(self, other):
-        if not isinstance(other, Binary):
-            raise NotImplementedError(
-                f"Cannot compare Binary with {str(type(other))[7:-1]}"
-            )
-        return Binary._compare(self, other, "gt")
+    def __gt__(self, other: Any) -> bool:
+        if isinstance(other, Binary):
+            return Binary._compare_binary(self, other, "gt")
+        raise NotImplementedError(
+            f"Cannot take greater than of Binary with {type(other).__name__}"
+        )
 
-    def __ge__(self, other):
-        if not isinstance(other, Binary):
-            raise NotImplementedError(
-                f"Cannot compare Binary with {str(type(other))[7:-1]}"
-            )
-        return Binary._compare(self, other, "ge")
+    def __ge__(self, other: Any) -> bool:
+        if isinstance(other, Binary):
+            return Binary._compare_binary(self, other, "ge")
+        raise NotImplementedError(
+            f"Cannot take greater than or equal of Binary with {type(other).__name__}"
+        )
 
-    def __ne__(self, other):
-        if not isinstance(other, Binary):
-            raise NotImplementedError(
-                f"Cannot compare Binary with {str(type(other))[7:-1]}"
-            )
-        return Binary._compare(self, other, "ne")
+    def __ne__(self, other: Any) -> bool:
+        if isinstance(other, Binary):
+            return Binary._compare_binary(self, other, "ne")
+        raise NotImplementedError(
+            f"Cannot take not equal of Binary with {type(other).__name__}"
+        )
 
-    ##########################
-    ##### Public methods #####
-    ##########################
+    ###################################
+    ##### Public Instance methods #####
+    ###################################
 
     def to_decimal(self) -> int:
         """
         Convert the binary number to a decimal number.
         """
 
-        return Binary._to_decimal(self)
+        return Binary._to_decimal(self.bits)
 
-    #########################
-    ##### Class methods #####
-    #########################
+    ################################
+    ##### Public Class methods #####
+    ################################
 
     @classmethod
-    def from_value(cls, value: Any) -> bytearray:
+    def from_value(cls, value: Any) -> bitarray:
         """
         Checks the type of the value and calls the
-        appropriate method to create a byte array.
+        appropriate method to create a bitarray.
         """
 
         if isinstance(value, Binary):
-            return value.value
-        if isinstance(value, bytearray):
+            return value.bits
+        if isinstance(value, bitarray):
             return value
         if isinstance(value, int):
-            return cls.from_decimal(value)
-        if isinstance(value, str):
-            return cls.from_string(value)
-        if isinstance(value, list):
-            return cls.from_list(value)
-        raise ValueError("Invalid value")
+            return cls._create_bit_array(bin(value)[2:])
+        if isinstance(value, (str, list, tuple, set)):
+            return cls._create_bit_array(value)
+        raise ValueError(f"Invalid type of value: {str(type(value))[7:-1]}")
 
-    @classmethod
-    def from_decimal(cls, decimal: int) -> bytearray:
-        """
-        Create a byte array from a decimal number.
-        """
-
-        binary = []
-        if decimal < 0:
-            raise ValueError("Invalid decimal value")
-        if decimal == 0:
-            binary.append(0)
-
-        while decimal > 0:
-            binary.append(decimal % 2)
-            decimal //= 2
-        return cls._create_bit_array(list(reversed(list(binary))))
-
-    @classmethod
-    def from_string(cls, string: str) -> bytearray:
-        """
-        Create a byte array from a binary string.
-        """
-
-        if not all(bit in "01" for bit in string):
-            raise ValueError("Invalid binary string")
-        return cls._create_bit_array([int(bit) for bit in string])
-
-    @classmethod
-    def from_list(cls, lst: list[int]) -> bytearray:
-        """
-        Create a byte array from a binary list.
-        """
-
-        if not all(bit in [0, 1] for bit in lst):
-            raise ValueError("Invalid binary list")
-        return cls._create_bit_array(lst)
-
-    ###########################
-    ##### Static methods ######
-    ###########################
+    ###################################
+    ##### Private Static methods ######
+    ###################################
 
     @staticmethod
-    def _to_decimal(binary: Self) -> int:
-        decimal = 0
-        for i in range(len(binary.value) * 8):
-            decimal += Binary._get_bit(binary.value, i) * 2**i
-        return decimal
+    def _to_decimal(value: Self) -> int:
+        return int(value.to01(), 2)
 
     @staticmethod
-    def _create_bit_array(lst: list[int]) -> bytearray:
-        bit_array = bytearray((len(lst) + 7) // 8)
-        for position, bit in enumerate(reversed(lst)):
-            Binary._set_bit(bit_array, position, bit)
-        return bit_array
+    def _create_bit_array(value: Any) -> bitarray:
+        return bitarray(value)
 
     @staticmethod
-    def _get_bit(value: bytearray, position: int) -> int:
-        byte_index, bit_index = divmod(position, 8)
-        return (value[byte_index] & (1 << bit_index)) >> bit_index
+    def _get_bit(bit_array: bitarray, position: int) -> int:
+        return bit_array[position]
 
     @staticmethod
-    def _set_bit(value: bytearray, position: int, bit: int) -> None:
-        byte_index, bit_index = divmod(position, 8)
-        if bit == 1:
-            value[byte_index] |= 1 << bit_index
-        else:
-            value[byte_index] &= ~(1 << bit_index)
+    def _set_bit(bit_array: bitarray, position: int, bit: int) -> None:
+        bit_array[position] = bit
 
-    # pylint: disable=too-many-return-statements
     @staticmethod
-    def _compare(left: Self, right: Self, operator: str) -> bool:
+    def _normalize_bit_arrays(*, bit_arrays: tuple[bitarray]) -> tuple[bitarray]:
+        max_len = max(map(len, bit_arrays))
+        return tuple(
+            bitarray("0") * (max_len - len(bit_array)) + bit_array
+            for bit_array in bit_arrays
+        )
+
+    @staticmethod
+    def _compare_binary(left: Self, right: Self, operator: str) -> bool:
+        max_len = max(len(left.bits), len(right.bits))
+        normalized_left, normalized_right = Binary._normalize_bit_arrays(
+            bit_arrays=(left.bits, right.bits)
+        )
         if operator == "eq":
-            return left.value == right.value
+            return normalized_left == normalized_right
         if operator == "lt":
-            return left.value < right.value
+            return normalized_left < normalized_right
         if operator == "le":
-            return left.value <= right.value
+            return normalized_left <= normalized_right
         if operator == "gt":
-            return left.value > right.value
+            return normalized_left > normalized_right
         if operator == "ge":
-            return left.value >= right.value
+            return normalized_left >= normalized_right
         if operator == "ne":
-            return left.value != right.value
-        return False
-
-    # pylint: enable=too-many-return-statements
+            return normalized_left != normalized_right
+        raise ValueError("Invalid operator")
